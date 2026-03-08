@@ -1,12 +1,13 @@
 spring:
   application:
     name: maintenance-services
-    # Configuración para TiDB (Protocolo MySQL)
-    datasource:
-      url: jdbc:mysql://${TIDB_HOST}:${TIDB_PORT:4000}/${TIDB_DB}
-      username: ${TIDB_USER}
-      password: ${TIDB_PASSWORD}
-      driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # Configuración para TiDB (Protocolo MySQL)
+  datasource:
+    url: jdbc:mysql://${TIDB_HOST}:${TIDB_PORT:4000}/${TIDB_DB}
+    username: ${TIDB_USER}
+    password: ${TIDB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 server:
   port: ${PORT:8080}
@@ -28,7 +29,7 @@ management:
   endpoint:
     health:
       show-details: always
-
+#FeignClient: Servicio que permite la comunicacion entre microservicios
 feign:
   client:
     config:
