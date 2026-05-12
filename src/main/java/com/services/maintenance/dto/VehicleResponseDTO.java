@@ -1,6 +1,7 @@
 package com.services.maintenance.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.services.maintenance.enums.OperationalStatus;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -21,7 +22,7 @@ public record VehicleResponseDTO (
         String engineNumber,
         Double initialKm,
         Double currentKm,
-        String operationalStatus,
+        OperationalStatus operationalStatus,
         String administrativeStatus,
         LocalDate createdAt,
         LocalDate updatedAt,

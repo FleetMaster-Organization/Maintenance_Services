@@ -18,10 +18,10 @@ import java.util.UUID;
 public class MaintenancesAuditEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private UUID id;
 
-    private UUID idMaintenance;
+    private UUID MaintenanceId;
 
     private String actionType;
 
