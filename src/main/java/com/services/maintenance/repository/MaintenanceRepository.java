@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface MaitenanceRepository extends JpaRepository<MaintenancesEntity, UUID> {
+public interface MaintenanceRepository extends JpaRepository<MaintenancesEntity, UUID> {
 }

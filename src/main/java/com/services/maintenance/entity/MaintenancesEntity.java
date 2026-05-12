@@ -1,14 +1,8 @@
 package com.services.maintenance.entity;
 
 import com.services.maintenance.enums.MaintenanceType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,25 +11,28 @@ import java.util.UUID;
 
 @Entity
 @Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MaintenancesEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private UUID id;
 
-    private UUID idVehicle;
+    private UUID vehicleId;
 
     private LocalDate startDate;
 
     private LocalDate endDate;
 
+    @Enumerated(EnumType.STRING)
     private MaintenanceType maintenanceType;
 
-    private Integer startKm;
+    private Double startKm;
 
-    private Integer endKm;
+    private Double endKm;
 
     private String mechanicalWorkshop;
 
@@ -46,4 +43,9 @@ public class MaintenancesEntity {
     private String createdBy;
 
     private OffsetDateTime createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        createdAt = OffsetDateTime.now();
+    }
 }
