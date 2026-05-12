@@ -31,15 +31,15 @@ public class MaintenanceServiceImpl
     ) {
 
         VehicleResponseDTO vehicle =
-                vehicleClient.getVehicle(
-                        request.vehicleId()
+                vehicleClient.getVehicleByPlate(
+                        request.plate()
                 );
 
         if(vehicle.operationalStatus()
                 == OperationalStatus.ASIGNADO) {
 
-            throw new RuntimeException(
-                    "Vehículo asignado"
+            throw new IllegalArgumentException(
+                    "El Vehículo se encuentra asignado a un conductor"
             );
         }
 

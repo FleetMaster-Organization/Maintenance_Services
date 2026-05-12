@@ -26,13 +26,6 @@ public class MaintenanceController {
     public ResponseEntity<MaintenanceResponseDTO> create(
             @RequestBody MaintenanceRequestDTO request
     ) {
-
-        System.out.println(
-                SecurityContextHolder.getContext()
-                        .getAuthentication()
-                        .getAuthorities()
-        );
-
         MaintenanceResponseDTO response =
                 maintenanceService.createMaintenance(request);
 

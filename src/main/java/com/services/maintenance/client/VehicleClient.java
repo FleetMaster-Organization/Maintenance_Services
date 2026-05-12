@@ -24,6 +24,11 @@ public interface VehicleClient {
             @PathVariable("id") UUID id
     );
 
+    @GetMapping("/vehicles/{plate}/plate")
+    VehicleResponseDTO getVehicleByPlate(
+            @PathVariable("plate")  String plate
+    );
+
     @PatchMapping("/vehicles/{id}/send-maintenance")
     void sendVehicleToMaintenance(
             @PathVariable("id") UUID id
