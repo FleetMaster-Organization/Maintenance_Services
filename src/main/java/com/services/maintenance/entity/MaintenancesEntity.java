@@ -23,6 +23,10 @@ public class MaintenancesEntity {
 
     private UUID vehicleId;
 
+    private UUID scheduleId;
+
+    private String vehiclePlate;
+
     private LocalDate startDate;
 
     private LocalDate endDate;

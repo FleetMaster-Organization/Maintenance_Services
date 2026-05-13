@@ -1,6 +1,5 @@
 package com.services.maintenance.exception;
 
-import com.services.maintenance.dto.ErrorResponse;
 import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now(),
                 404,
                 "Not Found",
-                "Vehículo no encontrado"
+                "No encontrado"
         );
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)

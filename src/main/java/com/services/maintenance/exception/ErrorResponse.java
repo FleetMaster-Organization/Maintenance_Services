@@ -1,4 +1,4 @@
-package com.services.maintenance.dto;
+package com.services.maintenance.exception;
 
 import java.time.LocalDateTime;
 

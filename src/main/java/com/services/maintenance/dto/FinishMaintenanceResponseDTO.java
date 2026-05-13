@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-public record MaintenanceResponseDTO(
+public record FinishMaintenanceResponseDTO(
 
         UUID id,
 
@@ -17,17 +17,22 @@ public record MaintenanceResponseDTO(
 
         LocalDate startDate,
 
+        LocalDate endDate,
+
         MaintenanceType maintenanceType,
 
         Integer startKm,
+
+        LocalDate endKm,
 
         String mechanicalWorkshop,
 
         BigDecimal cost,
 
+        String observations,
+
         String createdBy,
 
         OffsetDateTime createdAt
-
 ) {
 }
