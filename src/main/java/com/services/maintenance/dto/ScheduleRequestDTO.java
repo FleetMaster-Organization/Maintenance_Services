@@ -1,7 +1,6 @@
 package com.services.maintenance.dto;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.UUID;
 
 public record ScheduleRequestDTO(
@@ -9,7 +8,7 @@ public record ScheduleRequestDTO(
 
          UUID scheduleId,
 
-         UUID vehiclePlate,
+         String vehiclePlate,
 
          LocalDate scheduledDate,
 

@@ -51,18 +51,23 @@ public class MaintenanceServiceImpl
                 );
             }
 
-            ScheduleEntity schedule =
-                    scheduleRepository.findById(request.scheduleId())
-                            .orElseThrow(() ->
-                                    new IllegalArgumentException( "No se encuentra el cronograma no encontrado" ));
 
 
             MaintenancesEntity maintenance =
                         maintenanceMapper.toEntity(request);
 
+                if(request.scheduleId() != null) {
 
+                    ScheduleEntity schedule =
+                            scheduleRepository.findById(request.scheduleId())
+                                    .orElseThrow(() ->
+                                            new IllegalArgumentException(
+                                                    "Schedule no encontrado"
+                                            )
+                                    );
 
-                maintenance.setScheduleId(schedule.getId());
+                    maintenance.setScheduleId(schedule.getId());
+                }
 
                 maintenance.setVehicleId(vehicle.id());
 
@@ -70,7 +75,7 @@ public class MaintenanceServiceImpl
 
                 maintenance.setStartKm(vehicle.currentKm());
 
-                maintenance.setVehiclePlate(vehicle.plate());
+                maintenance.setVehiclePlate(request.plate());
 
                 maintenance.setCreatedAt(OffsetDateTime.now());
 
@@ -83,7 +88,7 @@ public class MaintenanceServiceImpl
                         vehicle.id()
                 );
 
-            return maintenanceMapper.toDTO(maintenance);
+        return maintenanceMapper.toDTO(maintenance);
     }
 
 

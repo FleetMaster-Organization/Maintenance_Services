@@ -10,7 +10,7 @@ public record ScheduleResponseDTO(
 
         UUID vehicleId,
 
-        UUID vehiclePlate,
+        String vehiclePlate,
 
         LocalDate scheduledDate,
 

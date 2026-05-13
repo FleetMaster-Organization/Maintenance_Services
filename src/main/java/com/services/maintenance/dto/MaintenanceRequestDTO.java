@@ -14,8 +14,6 @@ public record MaintenanceRequestDTO(
 
         MaintenanceType maintenanceType,
 
-        Integer startKm,
-
         String mechanicalWorkshop,
 
         BigDecimal cost,
