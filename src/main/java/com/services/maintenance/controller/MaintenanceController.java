@@ -1,18 +1,14 @@
 package com.services.maintenance.controller;
 
-import com.services.maintenance.dto.MaintenanceRequestDTO;
-import com.services.maintenance.dto.MaintenanceResponseDTO;
-import com.services.maintenance.dto.VehicleResponseDTO;
+import com.services.maintenance.dto.*;
 import com.services.maintenance.services.MaintenanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/maintenances")
@@ -26,13 +22,6 @@ public class MaintenanceController {
     public ResponseEntity<MaintenanceResponseDTO> create(
             @RequestBody MaintenanceRequestDTO request
     ) {
-
-        System.out.println(
-                SecurityContextHolder.getContext()
-                        .getAuthentication()
-                        .getAuthorities()
-        );
-
         MaintenanceResponseDTO response =
                 maintenanceService.createMaintenance(request);
 
@@ -40,4 +29,16 @@ public class MaintenanceController {
                 .status(HttpStatus.CREATED)
                 .body(response);
     }
+
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
+    public ResponseEntity<Void> update(
+            @PathVariable UUID id, @RequestBody FinishMaintenanceRequestDTO request
+    ) {
+        maintenanceService.finishMaintenance(id,request);
+
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT).build();
+    }
+
 }

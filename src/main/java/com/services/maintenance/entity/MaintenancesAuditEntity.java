@@ -21,7 +21,7 @@ public class MaintenancesAuditEntity {
     @GeneratedValue
     private UUID id;
 
-    private UUID MaintenanceId;
+    private UUID maintenanceId;
 
     private String actionType;
 

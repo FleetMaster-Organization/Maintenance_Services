@@ -3,22 +3,16 @@ package com.services.maintenance.dto;
 import com.services.maintenance.enums.MaintenanceType;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.UUID;
+
 
 public record MaintenanceRequestDTO(
 
-        UUID vehicleId,
+        String plate,
 
-        LocalDate startDate,
-
-        LocalDate endDate,
+        UUID scheduleId,
 
         MaintenanceType maintenanceType,
-
-        Integer startKm,
-
-        Integer endKm,
 
         String mechanicalWorkshop,
 

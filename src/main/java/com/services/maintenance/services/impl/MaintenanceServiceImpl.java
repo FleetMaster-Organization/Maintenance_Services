@@ -1,13 +1,13 @@
 package com.services.maintenance.services.impl;
 
 import com.services.maintenance.client.VehicleClient;
-import com.services.maintenance.dto.MaintenanceRequestDTO;
-import com.services.maintenance.dto.MaintenanceResponseDTO;
-import com.services.maintenance.dto.VehicleResponseDTO;
+import com.services.maintenance.dto.*;
 import com.services.maintenance.entity.MaintenancesEntity;
+import com.services.maintenance.entity.ScheduleEntity;
 import com.services.maintenance.enums.OperationalStatus;
 import com.services.maintenance.mapper.MaintenanceMapper;
 import com.services.maintenance.repository.MaintenanceRepository;
+import com.services.maintenance.repository.ScheduleRepository;
 import com.services.maintenance.services.MaintenanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,44 +24,101 @@ public class MaintenanceServiceImpl
     private final MaintenanceRepository maintenanceRepository;
     private final VehicleClient vehicleClient;
     private final MaintenanceMapper maintenanceMapper;
+    private final ScheduleRepository scheduleRepository;
 
     @Override
     public MaintenanceResponseDTO createMaintenance(
             MaintenanceRequestDTO request
     ) {
 
-        VehicleResponseDTO vehicle =
-                vehicleClient.getVehicle(
-                        request.vehicleId()
+            VehicleResponseDTO vehicle =
+                    vehicleClient.getVehicleByPlate(
+                            request.plate()
+                    );
+
+            if(vehicle.operationalStatus()
+                    == OperationalStatus.ASIGNADO) {
+
+                throw new IllegalArgumentException(
+                        "El Vehículo se encuentra asignado a un conductor"
                 );
+            }
 
-        if(vehicle.operationalStatus()
-                == OperationalStatus.ASIGNADO) {
+            if(vehicle.operationalStatus()
+                    == OperationalStatus.EN_MANTENIMIENTO) {
+                throw new IllegalArgumentException(
+                        "El vehiculo ya se encuentra en mantenimiento"
+                );
+            }
 
-            throw new RuntimeException(
-                    "Vehículo asignado"
-            );
-        }
 
-        MaintenancesEntity maintenance =
-                maintenanceMapper.toEntity(request);
 
-        maintenance.setVehicleId(vehicle.id());
+            MaintenancesEntity maintenance =
+                        maintenanceMapper.toEntity(request);
 
-        maintenance.setStartDate(LocalDate.now());
+                if(request.scheduleId() != null) {
 
-        maintenance.setStartKm(vehicle.currentKm());
+                    ScheduleEntity schedule =
+                            scheduleRepository.findById(request.scheduleId())
+                                    .orElseThrow(() ->
+                                            new IllegalArgumentException(
+                                                    "Schedule no encontrado"
+                                            )
+                                    );
 
-        maintenance.setCreatedAt(OffsetDateTime.now());
+                    maintenance.setScheduleId(schedule.getId());
+                }
 
-        maintenance.setCreatedBy("SYSTEM");
+                maintenance.setVehicleId(vehicle.id());
 
-        maintenanceRepository.save(maintenance);
+                maintenance.setStartDate(LocalDate.now());
 
-        vehicleClient.sendVehicleToMaintenance(
-                vehicle.id()
-        );
+                maintenance.setStartKm(vehicle.currentKm());
+
+                maintenance.setVehiclePlate(request.plate());
+
+                maintenance.setCreatedAt(OffsetDateTime.now());
+
+
+                maintenance.setCreatedBy("SYSTEM");
+
+                maintenanceRepository.save(maintenance);
+
+                vehicleClient.sendVehicleToMaintenance(
+                        vehicle.id()
+                );
 
         return maintenanceMapper.toDTO(maintenance);
     }
+
+
+    @Override
+    public void finishMaintenance(
+            UUID id,
+            FinishMaintenanceRequestDTO request
+    ) {
+
+        MaintenancesEntity maintenance =
+                maintenanceRepository.findById(id)
+                        .orElseThrow(() ->
+                                new IllegalArgumentException(
+                                        "Mantenimiento no encontrado"
+                                )
+                        );
+
+        maintenance.setEndDate(LocalDate.now());
+
+        maintenance.setEndKm(request.endKm());
+
+        maintenance.setObservations(request.observations());
+
+        maintenanceRepository.save(maintenance);
+
+        vehicleClient.activateVehicle(
+                maintenance.getVehicleId()
+        );
+
+    }
+
+
 }

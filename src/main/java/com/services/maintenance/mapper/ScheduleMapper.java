@@ -2,18 +2,17 @@ package com.services.maintenance.mapper;
 
 import com.services.maintenance.dto.MaintenanceRequestDTO;
 import com.services.maintenance.dto.MaintenanceResponseDTO;
+import com.services.maintenance.dto.ScheduleRequestDTO;
+import com.services.maintenance.dto.ScheduleResponseDTO;
 import com.services.maintenance.entity.MaintenancesEntity;
+import com.services.maintenance.entity.ScheduleEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface MaintenanceMapper {
+public interface ScheduleMapper {
 
-    @Mapping(source = "plate", target = "vehiclePlate")
-    MaintenancesEntity toEntity(MaintenanceRequestDTO maintenanceRequestDTO);
-
-    @Mapping(source = "vehiclePlate", target = "plate")
-    MaintenanceResponseDTO toDTO(MaintenancesEntity maintenanceEntity);
+    ScheduleEntity toEntity(ScheduleRequestDTO requestDTO);
+    ScheduleResponseDTO toDTO(ScheduleEntity responseDTO);
 
 }
