@@ -9,11 +9,13 @@ import com.services.maintenance.mapper.MaintenanceMapper;
 import com.services.maintenance.repository.MaintenanceRepository;
 import com.services.maintenance.repository.ScheduleRepository;
 import com.services.maintenance.services.MaintenanceService;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -91,6 +93,49 @@ public class MaintenanceServiceImpl
         return maintenanceMapper.toDTO(maintenance);
     }
 
+    @Override
+    public List<MaintenanceResponseDTO> getAllMaintenances() {
+
+        List<MaintenancesEntity>  maintenances = maintenanceRepository.findAll();
+
+        return maintenances.stream()
+                .map(maintenanceMapper::toDTO)
+                .toList();
+
+    }
+
+    @Override
+    public List<MaintenanceResponseDTO> getAllMaintenancesByPlate(String plate) {
+
+        try {
+
+            VehicleResponseDTO vehicle =
+                    vehicleClient.getVehicleByPlate(plate);
+
+            List<MaintenancesEntity> maintenances =
+                    maintenanceRepository.findByVehicleId(vehicle.id());
+
+            return maintenances.stream()
+                    .map(maintenanceMapper::toDTO)
+                    .toList();
+
+        } catch (FeignException.NotFound e) {
+
+            throw new IllegalArgumentException(
+                    "Vehiculo con placa: " + plate + " no encontrado"
+            );
+        }
+    }
+
+    @Override
+    public MaintenanceResponseDTO getMaintenanceById(UUID id) {
+
+        MaintenancesEntity maintenances = maintenanceRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Maintenance no encontrado"));
+
+        return maintenanceMapper.toDTO(maintenances);
+    }
+
 
     @Override
     public void finishMaintenance(
@@ -119,6 +164,9 @@ public class MaintenanceServiceImpl
         );
 
     }
+
+
+
 
 
 }

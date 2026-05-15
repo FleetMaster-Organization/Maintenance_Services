@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -16,6 +17,34 @@ import java.util.UUID;
 public class MaintenanceController {
 
     private final MaintenanceService maintenanceService;
+
+    @GetMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
+    public ResponseEntity<List<MaintenanceResponseDTO>> findAllMaintenances() {
+        List<MaintenanceResponseDTO> response =
+                maintenanceService.getAllMaintenances();
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
+    public ResponseEntity<MaintenanceResponseDTO> findMaintenanceById(@PathVariable UUID id) {
+
+        MaintenanceResponseDTO response = maintenanceService.getMaintenanceById(id);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{plate}/plate")
+    @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
+    public ResponseEntity<List<MaintenanceResponseDTO>> findAllMaintenanceByPlate(@PathVariable String plate) {
+
+        List<MaintenanceResponseDTO> response = maintenanceService.getAllMaintenancesByPlate(plate);
+
+        return ResponseEntity.ok(response);
+    }
+
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
