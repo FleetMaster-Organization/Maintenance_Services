@@ -26,7 +26,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public ScheduleResponseDTO createSchedule(
-            ScheduleRequestDTO request
+            ScheduleRequestDTO request, String createdBy
     ) {
 
         ScheduleEntity schedule =
@@ -42,7 +42,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         schedule.setCreatedAt(OffsetDateTime.now());
 
-        schedule.setCreatedBy("SYSTEM");
+        schedule.setCreatedBy(createdBy);
 
         scheduleRepository.save(schedule);
 

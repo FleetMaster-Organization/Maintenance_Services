@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface ScheduleService {
 
-    ScheduleResponseDTO createSchedule(ScheduleRequestDTO scheduleRequestDTO);
+    ScheduleResponseDTO createSchedule(ScheduleRequestDTO scheduleRequestDTO, String createdBy);
 
 
     List<ScheduleResponseDTO> getAllScheduleByPlate(String plate);

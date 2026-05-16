@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface MaintenanceService {
 
-    MaintenanceResponseDTO createMaintenance(MaintenanceRequestDTO maintenanceRequestDTO);
+    MaintenanceResponseDTO createMaintenance(MaintenanceRequestDTO maintenanceRequestDTO, String createdBy);
 
     List<FinishMaintenanceResponseDTO> getAllMaintenances();
 
@@ -18,5 +18,5 @@ public interface MaintenanceService {
 
     FinishMaintenanceResponseDTO getMaintenanceById(UUID id);
 
-    void finishMaintenance(UUID id, FinishMaintenanceRequestDTO finishMaintenanceRequestDTO);
+    void finishMaintenance(UUID id, FinishMaintenanceRequestDTO finishMaintenanceRequestDTO, String modifiedBy);
 }

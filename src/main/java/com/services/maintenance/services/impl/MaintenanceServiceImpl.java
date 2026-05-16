@@ -2,10 +2,12 @@ package com.services.maintenance.services.impl;
 
 import com.services.maintenance.client.VehicleClient;
 import com.services.maintenance.dto.*;
+import com.services.maintenance.entity.MaintenancesAuditEntity;
 import com.services.maintenance.entity.MaintenancesEntity;
 import com.services.maintenance.entity.ScheduleEntity;
 import com.services.maintenance.enums.OperationalStatus;
 import com.services.maintenance.mapper.MaintenanceMapper;
+import com.services.maintenance.repository.MaintenanceAuditRepository;
 import com.services.maintenance.repository.MaintenanceRepository;
 import com.services.maintenance.repository.ScheduleRepository;
 import com.services.maintenance.services.MaintenanceService;
@@ -27,10 +29,11 @@ public class MaintenanceServiceImpl
     private final VehicleClient vehicleClient;
     private final MaintenanceMapper maintenanceMapper;
     private final ScheduleRepository scheduleRepository;
+    private final MaintenanceAuditRepository maintenanceAuditRepository;
 
     @Override
     public MaintenanceResponseDTO createMaintenance(
-            MaintenanceRequestDTO request
+            MaintenanceRequestDTO request, String createdBy
     ) {
 
             VehicleResponseDTO vehicle =
@@ -82,9 +85,12 @@ public class MaintenanceServiceImpl
                 maintenance.setCreatedAt(OffsetDateTime.now());
 
 
-                maintenance.setCreatedBy("SYSTEM");
+                maintenance.setCreatedBy(createdBy);
 
                 maintenanceRepository.save(maintenance);
+
+                saveAudit(maintenance.getId(), "CREATE", "ALL", null,
+                        maintenance.getVehiclePlate(), maintenance.getCreatedBy());
 
                 vehicleClient.sendVehicleToMaintenance(
                         vehicle.id()
@@ -140,7 +146,7 @@ public class MaintenanceServiceImpl
     @Override
     public void finishMaintenance(
             UUID id,
-            FinishMaintenanceRequestDTO request
+            FinishMaintenanceRequestDTO request, String modifiedBy
     ) {
 
         MaintenancesEntity maintenance =
@@ -159,14 +165,26 @@ public class MaintenanceServiceImpl
 
         maintenanceRepository.save(maintenance);
 
+        saveAudit(maintenance.getId(), "FINISH", "endDate", null, maintenance.getEndDate().toString(), modifiedBy);
+        saveAudit(maintenance.getId(), "FINISH", "endKm", null, String.valueOf(maintenance.getEndKm()), modifiedBy);
+        saveAudit(maintenance.getId(), "FINISH", "observations", null, maintenance.getObservations(), modifiedBy);
+
         vehicleClient.activateVehicle(
                 maintenance.getVehicleId()
         );
 
     }
 
-
-
-
-
+    private void saveAudit(UUID maintenanceId, String actionType, String field, String oldValue, String newValue, String modifiedBy) {
+        MaintenancesAuditEntity audit = MaintenancesAuditEntity.builder()
+                .maintenanceId(maintenanceId)
+                .actionType(actionType)
+                .modifiedField(field)
+                .oldValue(oldValue)
+                .newValue(newValue)
+                .modifiedBy(modifiedBy)
+                .modifiedAt(OffsetDateTime.now())
+                .build();
+        maintenanceAuditRepository.save(audit);
+    }
 }
