@@ -20,8 +20,8 @@ public class MaintenanceController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
-    public ResponseEntity<List<MaintenanceResponseDTO>> findAllMaintenances() {
-        List<MaintenanceResponseDTO> response =
+    public ResponseEntity<List<FinishMaintenanceResponseDTO>> findAllMaintenances() {
+        List<FinishMaintenanceResponseDTO> response =
                 maintenanceService.getAllMaintenances();
 
         return ResponseEntity.ok(response);
@@ -29,18 +29,18 @@ public class MaintenanceController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
-    public ResponseEntity<MaintenanceResponseDTO> findMaintenanceById(@PathVariable UUID id) {
+    public ResponseEntity<FinishMaintenanceResponseDTO> findMaintenanceById(@PathVariable UUID id) {
 
-        MaintenanceResponseDTO response = maintenanceService.getMaintenanceById(id);
+        FinishMaintenanceResponseDTO response = maintenanceService.getMaintenanceById(id);
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{plate}/plate")
     @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
-    public ResponseEntity<List<MaintenanceResponseDTO>> findAllMaintenanceByPlate(@PathVariable String plate) {
+    public ResponseEntity<List<FinishMaintenanceResponseDTO>> findAllMaintenanceByPlate(@PathVariable String plate) {
 
-        List<MaintenanceResponseDTO> response = maintenanceService.getAllMaintenancesByPlate(plate);
+        List<FinishMaintenanceResponseDTO> response = maintenanceService.getAllMaintenancesByPlate(plate);
 
         return ResponseEntity.ok(response);
     }

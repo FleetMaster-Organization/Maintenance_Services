@@ -1,11 +1,9 @@
 package com.services.maintenance.services.impl;
 
 import com.services.maintenance.client.VehicleClient;
-import com.services.maintenance.dto.MaintenanceResponseDTO;
 import com.services.maintenance.dto.ScheduleRequestDTO;
 import com.services.maintenance.dto.ScheduleResponseDTO;
 import com.services.maintenance.dto.VehicleResponseDTO;
-import com.services.maintenance.entity.MaintenancesEntity;
 import com.services.maintenance.entity.ScheduleEntity;
 import com.services.maintenance.mapper.ScheduleMapper;
 import com.services.maintenance.repository.ScheduleRepository;

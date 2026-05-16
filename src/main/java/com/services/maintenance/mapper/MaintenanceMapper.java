@@ -1,5 +1,6 @@
 package com.services.maintenance.mapper;
 
+import com.services.maintenance.dto.FinishMaintenanceResponseDTO;
 import com.services.maintenance.dto.MaintenanceRequestDTO;
 import com.services.maintenance.dto.MaintenanceResponseDTO;
 import com.services.maintenance.entity.MaintenancesEntity;
@@ -15,5 +16,8 @@ public interface MaintenanceMapper {
 
     @Mapping(source = "vehiclePlate", target = "plate")
     MaintenanceResponseDTO toDTO(MaintenancesEntity maintenanceEntity);
+
+    @Mapping(source = "vehiclePlate", target = "plate")
+    FinishMaintenanceResponseDTO toFinishDTO(MaintenancesEntity maintenanceEntity);
 
 }

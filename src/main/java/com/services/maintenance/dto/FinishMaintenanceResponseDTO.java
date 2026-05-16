@@ -21,9 +21,9 @@ public record FinishMaintenanceResponseDTO(
 
         MaintenanceType maintenanceType,
 
-        Integer startKm,
+        Double startKm,
 
-        LocalDate endKm,
+        Double endKm,
 
         String mechanicalWorkshop,
 

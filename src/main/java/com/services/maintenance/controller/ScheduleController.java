@@ -1,6 +1,5 @@
 package com.services.maintenance.controller;
 
-import com.services.maintenance.dto.MaintenanceResponseDTO;
 import com.services.maintenance.dto.ScheduleRequestDTO;
 import com.services.maintenance.dto.ScheduleResponseDTO;
 import com.services.maintenance.services.ScheduleService;

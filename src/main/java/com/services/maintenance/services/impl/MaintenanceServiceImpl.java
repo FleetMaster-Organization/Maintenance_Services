@@ -94,18 +94,18 @@ public class MaintenanceServiceImpl
     }
 
     @Override
-    public List<MaintenanceResponseDTO> getAllMaintenances() {
+    public List<FinishMaintenanceResponseDTO> getAllMaintenances() {
 
         List<MaintenancesEntity>  maintenances = maintenanceRepository.findAll();
 
         return maintenances.stream()
-                .map(maintenanceMapper::toDTO)
+                .map(maintenanceMapper::toFinishDTO)
                 .toList();
 
     }
 
     @Override
-    public List<MaintenanceResponseDTO> getAllMaintenancesByPlate(String plate) {
+    public List<FinishMaintenanceResponseDTO> getAllMaintenancesByPlate(String plate) {
 
         try {
 
@@ -116,7 +116,7 @@ public class MaintenanceServiceImpl
                     maintenanceRepository.findByVehicleId(vehicle.id());
 
             return maintenances.stream()
-                    .map(maintenanceMapper::toDTO)
+                    .map(maintenanceMapper::toFinishDTO)
                     .toList();
 
         } catch (FeignException.NotFound e) {
@@ -128,12 +128,12 @@ public class MaintenanceServiceImpl
     }
 
     @Override
-    public MaintenanceResponseDTO getMaintenanceById(UUID id) {
+    public FinishMaintenanceResponseDTO getMaintenanceById(UUID id) {
 
         MaintenancesEntity maintenances = maintenanceRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Maintenance no encontrado"));
 
-        return maintenanceMapper.toDTO(maintenances);
+        return maintenanceMapper.toFinishDTO(maintenances);
     }
 
 
