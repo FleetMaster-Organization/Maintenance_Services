@@ -51,14 +51,11 @@ public class JwtParsingFilter extends OncePerRequestFilter {
                 List<String> roles =
                         tokenProvider.getRolesFromToken(token);
 
-                System.out.println("ROLES: " + roles);
-
                 List<SimpleGrantedAuthority> authorities =
                         roles.stream()
                                 .map(SimpleGrantedAuthority::new)
                                 .toList();
 
-                System.out.println("AUTHORITIES: " + authorities);
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
