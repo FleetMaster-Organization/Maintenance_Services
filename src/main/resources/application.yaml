@@ -13,16 +13,16 @@ spring:
             readTimeout: 5000
 
 
+  # Configuración PostgreSQL (Supabase/TiDB)
+  datasource:
+    url: jdbc:postgresql://${TIDB_HOST}:${TIDB_PORT:6543}/${TIDB_DB}?currentSchema=maintenances_db&sslmode=require
+    username: ${TIDB_USER}
+    password: ${TIDB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: create
-
-  # Configuración para TiDB (Protocolo MySQL)
-  datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
 
 
 
