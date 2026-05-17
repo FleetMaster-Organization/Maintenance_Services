@@ -47,7 +47,7 @@ public class ScheduleController {
             }
     )
     @PostMapping
-    @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_MECANICO')")
     public ResponseEntity<ScheduleResponseDTO> create(@RequestBody ScheduleRequestDTO request) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -74,7 +74,7 @@ public class ScheduleController {
             }
     )
     @GetMapping("/{plate}/plate")
-    @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_MECANICO')")
     public ResponseEntity<List<ScheduleResponseDTO>> findAllSchedulesByPlate(@PathVariable String plate) {
 
         List<ScheduleResponseDTO> response = scheduleService.getAllScheduleByPlate(plate);
