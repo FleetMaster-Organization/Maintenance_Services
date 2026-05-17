@@ -13,6 +13,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
+@Table(name = "maintenances")
 @NoArgsConstructor
 @AllArgsConstructor
 public class MaintenancesEntity {

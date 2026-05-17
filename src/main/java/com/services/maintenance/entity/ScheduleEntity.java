@@ -1,9 +1,6 @@
 package com.services.maintenance.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -14,6 +11,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
+@Table(name = "schedules")
 @NoArgsConstructor
 @AllArgsConstructor
 public class ScheduleEntity {
