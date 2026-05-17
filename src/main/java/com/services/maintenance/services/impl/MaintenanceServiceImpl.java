@@ -11,6 +11,8 @@ import com.services.maintenance.repository.MaintenanceAuditRepository;
 import com.services.maintenance.repository.MaintenanceRepository;
 import com.services.maintenance.repository.ScheduleRepository;
 import com.services.maintenance.services.MaintenanceService;
+import com.services.maintenance.exception.BusinessRuleException;
+import com.services.maintenance.exception.ResourceNotFoundException;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,14 +46,14 @@ public class MaintenanceServiceImpl
             if(vehicle.operationalStatus()
                     == OperationalStatus.ASIGNADO) {
 
-                throw new IllegalArgumentException(
+                throw new BusinessRuleException(
                         "El Vehículo se encuentra asignado a un conductor"
                 );
             }
 
             if(vehicle.operationalStatus()
                     == OperationalStatus.EN_MANTENIMIENTO) {
-                throw new IllegalArgumentException(
+                throw new BusinessRuleException(
                         "El vehiculo ya se encuentra en mantenimiento"
                 );
             }
@@ -66,7 +68,7 @@ public class MaintenanceServiceImpl
                     ScheduleEntity schedule =
                             scheduleRepository.findById(request.scheduleId())
                                     .orElseThrow(() ->
-                                            new IllegalArgumentException(
+                                            new ResourceNotFoundException(
                                                     "Schedule no encontrado"
                                             )
                                     );
@@ -127,7 +129,7 @@ public class MaintenanceServiceImpl
 
         } catch (FeignException.NotFound e) {
 
-            throw new IllegalArgumentException(
+            throw new ResourceNotFoundException(
                     "Vehiculo con placa: " + plate + " no encontrado"
             );
         }
@@ -137,7 +139,7 @@ public class MaintenanceServiceImpl
     public FinishMaintenanceResponseDTO getMaintenanceById(UUID id) {
 
         MaintenancesEntity maintenances = maintenanceRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Maintenance no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Maintenance no encontrado"));
 
         return maintenanceMapper.toFinishDTO(maintenances);
     }
@@ -152,7 +154,7 @@ public class MaintenanceServiceImpl
         MaintenancesEntity maintenance =
                 maintenanceRepository.findById(id)
                         .orElseThrow(() ->
-                                new IllegalArgumentException(
+                                new ResourceNotFoundException(
                                         "Mantenimiento no encontrado"
                                 )
                         );

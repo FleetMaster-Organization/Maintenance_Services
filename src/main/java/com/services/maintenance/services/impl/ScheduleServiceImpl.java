@@ -8,6 +8,8 @@ import com.services.maintenance.entity.ScheduleEntity;
 import com.services.maintenance.mapper.ScheduleMapper;
 import com.services.maintenance.repository.ScheduleRepository;
 import com.services.maintenance.services.ScheduleService;
+import com.services.maintenance.exception.BusinessRuleException;
+import com.services.maintenance.exception.ResourceNotFoundException;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,7 +37,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         if(request.scheduledDate()
                 .isBefore(LocalDate.now())) {
 
-            throw new IllegalArgumentException(
+            throw new BusinessRuleException(
                     "La fecha programada no puede ser pasada"
             );
         }
@@ -66,7 +68,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         } catch (FeignException.NotFound e) {
 
-            throw new IllegalArgumentException(
+            throw new ResourceNotFoundException(
                     "Vehiculo con placa: " + plate + " no encontrado"
             );
         }
