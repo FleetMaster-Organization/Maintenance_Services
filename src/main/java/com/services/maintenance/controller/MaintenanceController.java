@@ -40,7 +40,7 @@ public class MaintenanceController {
             }
     )
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_MECANICO')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRADOR','ROLE_MECANICO')")
     public ResponseEntity<List<FinishMaintenanceResponseDTO>> findAllMaintenances() {
         List<FinishMaintenanceResponseDTO> response =
                 maintenanceService.getAllMaintenances();
@@ -61,7 +61,7 @@ public class MaintenanceController {
             }
     )
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_MECANICO')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRADOR','ROLE_MECANICO')")
     public ResponseEntity<FinishMaintenanceResponseDTO> findMaintenanceById(@PathVariable UUID id) {
 
         FinishMaintenanceResponseDTO response = maintenanceService.getMaintenanceById(id);
@@ -81,7 +81,7 @@ public class MaintenanceController {
             }
     )
     @GetMapping("/{plate}/plate")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_MECANICO')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRADOR','ROLE_MECANICO')")
     public ResponseEntity<List<FinishMaintenanceResponseDTO>> findAllMaintenanceByPlate(@PathVariable String plate) {
 
         List<FinishMaintenanceResponseDTO> response = maintenanceService.getAllMaintenancesByPlate(plate);
@@ -107,7 +107,7 @@ public class MaintenanceController {
             }
     )
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_MECANICO')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRADOR','ROLE_MECANICO')")
     public ResponseEntity<MaintenanceResponseDTO> create(
             @RequestBody MaintenanceRequestDTO request
     ) {
@@ -139,7 +139,7 @@ public class MaintenanceController {
             }
     )
     @PatchMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_MECANICO')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRADOR','ROLE_MECANICO')")
     public ResponseEntity<Void> update(
             @PathVariable UUID id, @RequestBody FinishMaintenanceRequestDTO request
     ) {
