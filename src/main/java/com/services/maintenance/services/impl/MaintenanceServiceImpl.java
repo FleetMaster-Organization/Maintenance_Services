@@ -172,6 +172,29 @@ public class MaintenanceServiceImpl
         saveAudit(maintenance.getId(), "FINISH", "endKm", null, String.valueOf(maintenance.getEndKm()), modifiedBy);
         saveAudit(maintenance.getId(), "FINISH", "observations", null, maintenance.getObservations(), modifiedBy);
 
+        if (request.nextScheduledDate() != null) {
+
+            if (request.nextScheduledDate().isBefore(LocalDate.now())) {
+                throw new BusinessRuleException(
+                        "La fecha de la próxima cita no puede ser pasada"
+                );
+            }
+
+            ScheduleEntity schedule = ScheduleEntity.builder()
+                    .vehicleId(maintenance.getVehicleId())
+                    .vehiclePlate(maintenance.getVehiclePlate())
+                    .scheduledDate(request.nextScheduledDate())
+                    .observations("Próxima cita agendada al cerrar mantenimiento")
+                    .createdAt(OffsetDateTime.now())
+                    .createdBy(modifiedBy)
+                    .build();
+
+            scheduleRepository.save(schedule);
+
+            saveAudit(maintenance.getId(), "SCHEDULE_NEXT", "nextScheduledDate",
+                    null, request.nextScheduledDate().toString(), modifiedBy);
+        }
+
         vehicleClient.activateVehicle(
                 maintenance.getVehicleId(),
                 new ActivateVehicleRequestDTO(maintenance.getEndKm())
