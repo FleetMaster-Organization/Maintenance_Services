@@ -2,6 +2,7 @@ package com.services.maintenance.services.impl;
 
 import com.services.maintenance.client.VehicleClient;
 import com.services.maintenance.dto.*;
+import com.services.maintenance.dto.ActivateVehicleRequestDTO;
 import com.services.maintenance.entity.MaintenancesAuditEntity;
 import com.services.maintenance.entity.MaintenancesEntity;
 import com.services.maintenance.entity.ScheduleEntity;
@@ -172,7 +173,8 @@ public class MaintenanceServiceImpl
         saveAudit(maintenance.getId(), "FINISH", "observations", null, maintenance.getObservations(), modifiedBy);
 
         vehicleClient.activateVehicle(
-                maintenance.getVehicleId()
+                maintenance.getVehicleId(),
+                new ActivateVehicleRequestDTO(maintenance.getEndKm())
         );
 
     }

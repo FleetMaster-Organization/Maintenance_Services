@@ -1,11 +1,13 @@
 package com.services.maintenance.client;
 
+import com.services.maintenance.dto.ActivateVehicleRequestDTO;
 import com.services.maintenance.dto.VehicleResponseDTO;
 import com.services.maintenance.enums.OperationalStatus;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 import java.util.UUID;
@@ -31,7 +33,8 @@ public interface VehicleClient {
 
     @PatchMapping("/vehicles/{id}/activate")
     void activateVehicle(
-            @PathVariable("id")  UUID id
+            @PathVariable("id") UUID id,
+            @RequestBody ActivateVehicleRequestDTO request
     );
 
 }
