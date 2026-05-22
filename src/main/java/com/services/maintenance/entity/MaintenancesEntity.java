@@ -32,6 +32,8 @@ public class MaintenancesEntity {
 
     private LocalDate endDate;
 
+    private LocalDate nextScheduledDate;
+
     @Enumerated(EnumType.STRING)
     private MaintenanceType maintenanceType;
 

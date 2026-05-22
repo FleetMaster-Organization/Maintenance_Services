@@ -19,6 +19,8 @@ public record FinishMaintenanceResponseDTO(
 
         LocalDate endDate,
 
+        LocalDate nextScheduledDate,
+
         MaintenanceType maintenanceType,
 
         Double startKm,

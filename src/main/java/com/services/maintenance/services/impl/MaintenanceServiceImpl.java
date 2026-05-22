@@ -166,6 +166,10 @@ public class MaintenanceServiceImpl
 
         maintenance.setObservations(request.observations());
 
+        if (request.nextScheduledDate() != null) {
+            maintenance.setNextScheduledDate(request.nextScheduledDate());
+        }
+
         maintenanceRepository.save(maintenance);
 
         saveAudit(maintenance.getId(), "FINISH", "endDate", null, maintenance.getEndDate().toString(), modifiedBy);
